@@ -8,6 +8,11 @@ Demonstração
 
 ![Swagger](Docs/swagger.png)
 
+Links
+
+- API publicada: https://contactmanager-api-g5cj.onrender.com/swagger
+- Repositório: https://github.com/MiguelBelo041/contactmanager
+
 Como avaliar rapidamente
 
 1. Clone o repositório.
