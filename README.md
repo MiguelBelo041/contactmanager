@@ -2,6 +2,21 @@ ContactManager
 
 ContactManager é uma aplicação desktop em WPF que conversa com uma API REST pra fazer um CRUD simples de contatos com nome, sobrenome e telefone. A API está hospedada no Render em container Docker, e o banco é um Azure SQL Database, também na nuvem. Pra rodar a aplicação na máquina, basta abrir o projeto WPF, ele já vem configurado pra conversar com a API hospedada, então não precisa configurar banco nem subir API.
 
+Demonstração
+
+![Tela WPF](Docs/screenshot-wpf.png)
+
+![Swagger](Docs/swagger.png)
+
+Como avaliar rapidamente
+
+1. Clone o repositório.
+2. Abra a solution ContactManager.sln no Visual Studio.
+3. Defina ContactManager.Wpf como projeto de inicialização.
+4. Execute a aplicação.
+5. O WPF já consome a API publicada no Render.
+6. No primeiro acesso, a API pode demorar alguns segundos por causa do cold start do plano gratuito do Render.
+
 Tecnologias
 
 A stack é .NET 8, ASP.NET Core Web API com Swagger, Entity Framework Core 8 com o provider SqlServer, e WPF seguindo o padrão MVVM. A comunicação entre WPF e API é feita com HttpClient sobre HTTPS. O banco é Azure SQL Database no plano serverless com auto-pause, então fica em zero custo dentro dos limites grátis. A API roda em container Docker no Render (free tier), e o Dockerfile faz build em duas etapas pra deixar a imagem leve.
@@ -12,13 +27,9 @@ A solution tem dois projetos. No lado do backend, o ContactManager.Api separa as
 
 Do lado do desktop, o ContactManager.Wpf segue uma divisão coerente com a mentalidade MVVM: tem o Contact em Models, o ContactApiService em Services, a MainViewModel junto com as classes base ViewModelBase e RelayCommand em ViewModels, e um ShortGuidConverter em Converters. A MainWindow.xaml e seu code-behind ficam na raiz do projeto. A MainViewModel concentra todo o estado e a lógica da tela, e o code-behind do MainWindow ficou enxuto: o InitializeComponent, um handler pra deselecionar a linha do DataGrid quando o usuário clica fora dele, e três handlers no campo Telefone que bloqueiam qualquer tecla, espaço ou paste que contenha não-dígito.
 
-Como rodar
+Como rodar pelo terminal
 
-Precisa de Windows e do .NET 8 SDK. Como a API e o banco já estão hospedados na nuvem, não precisa configurar nada além disso.
-
-Abre um terminal na pasta ContactManager.Wpf e roda dotnet run. A janela abre e já carrega a lista de contatos do Azure SQL através da API. Como o Render free tier suspende o container após 15 minutos de inatividade, o primeiro acesso pode demorar entre 30 e 60 segundos pra acordar o container. Os acessos seguintes são instantâneos.
-
-O endereço da API hospedada fica no arquivo ContactManager.Wpf/appsettings.json, na chave ApiBaseUrl. Se quiser apontar pra outra instância, basta editar e recompilar.
+Se preferir não usar Visual Studio, dá pra rodar pelo dotnet CLI também. Precisa de Windows e do .NET 8 SDK. Abre um terminal na pasta ContactManager.Wpf e roda dotnet run. A janela abre e já carrega a lista de contatos do Azure SQL através da API. O endereço da API hospedada fica no arquivo ContactManager.Wpf/appsettings.json, na chave ApiBaseUrl. Se quiser apontar pra outra instância, basta editar e recompilar.
 
 Endpoints da API
 
